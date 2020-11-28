@@ -13,10 +13,10 @@ namespace VODKA_MOSCOW_PROTOCOL
         static void Main(string[] args)
         {
             ServerClientSync sc = new ServerClientSync();
-            sc.ip = IPAddress.Parse("192.168.10.110");
-            sc.send_port = 11001;
-            sc.receive_port = 11000;
-            sc.syncWithServer();
+            sc.ip = IPAddress.Parse("YOUR_IP");
+            sc.send_port = SEND_PORT;
+            sc.receive_port = RECEIVE_PORT;
+            //sc.syncWithServer(); or sc.syncWithClient(); Depending on the role.
         }
     }
 }
