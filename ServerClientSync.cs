@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VODKA_MOSCOW_PROTOCOL
 {
@@ -13,10 +10,8 @@ namespace VODKA_MOSCOW_PROTOCOL
         public IPAddress ip;
         public int receive_port;
         public int send_port;
-
+        public string[] buffer;
         Packager pkg = new Packager();
-
-
 
         public void syncWithClient()
         {
@@ -27,7 +22,9 @@ namespace VODKA_MOSCOW_PROTOCOL
 
             while (true)
             {
-                ps.receiveData();
+                buffer = ps.receiveData();
+                Console.WriteLine(buffer[0]);
+                Console.WriteLine(pkg.verifyPackage(buffer[0], buffer[1]));
                 string input = Console.ReadLine();
                 byte[] sendbuf = Encoding.ASCII.GetBytes(input);
                 ps.sendData(pkg.pack(sendbuf));
@@ -46,7 +43,9 @@ namespace VODKA_MOSCOW_PROTOCOL
                 string input = Console.ReadLine();
                 byte[] sendbuf = Encoding.ASCII.GetBytes(input);
                 ps.sendData(pkg.pack(sendbuf));
-                ps.receiveData();
+                buffer = ps.receiveData();
+                Console.WriteLine(buffer[0]);
+                Console.WriteLine(pkg.verifyPackage(buffer[0], buffer[1]));
             }
         }
     }
