@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VODKA_MOSCOW_PROTOCOL
 {
@@ -15,11 +12,11 @@ namespace VODKA_MOSCOW_PROTOCOL
             var sha1 = System.Security.Cryptography.SHA1.Create();
             byte[] checksum = sha1.ComputeHash(data, 0, data.Length);
             dataTree dataRaw = new dataTree();
-            
+
             dataRaw.data = data;
-            dataRaw.checksum = checksum;
+            dataRaw.checksum = BitConverter.ToString(checksum).Replace("-", "");
             string jsonStr = JsonConvert.SerializeObject(dataRaw);
-            
+
             return Encoding.ASCII.GetBytes(jsonStr);
         }
 
@@ -29,11 +26,26 @@ namespace VODKA_MOSCOW_PROTOCOL
             string[] result = { unpacked.data, unpacked.checksum };
             return result;
         }
+
+        public int verifyPackage(string data, string checksum)
+        {
+            var sha1 = System.Security.Cryptography.SHA1.Create();
+            byte[] buf = Encoding.UTF8.GetBytes(data);
+            byte[] hash = sha1.ComputeHash(buf, 0, buf.Length);
+            string newChecksum = System.BitConverter.ToString(hash).Replace("-", "");
+
+            if (newChecksum.Equals(checksum))
+            {
+                return 1;
+            }
+            else
+                return 0;
+        }
     }
 
     class dataTree
     {
         public byte[] data;
-        public byte[] checksum;
+        public string checksum;
     }
 }
