@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Server
+namespace VODKA_MOSCOW_PROTOCOL
 {
     class ProtocolStack
     {
@@ -17,27 +14,28 @@ namespace Server
         public void sendData(byte[] buffer)
         {
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPEndPoint ep = new IPEndPoint(ip, send_port);
             s.SendTo(buffer, ep);
             s.Close();
         }
 
-        public void receiveData()
+        public string receiveData()
         {
             UdpClient listener = new UdpClient(receive_port);
-            listener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPEndPoint groupEP = new IPEndPoint(ip, receive_port);
-         
-                Console.WriteLine("Waiting for broadcast");
-                byte[] bytes = listener.Receive(ref groupEP);
-
-           
-                    Console.WriteLine($"Received broadcast from {groupEP} :");
-                    Console.WriteLine($" {Encoding.ASCII.GetString(bytes, 0, bytes.Length)}");
+            byte[] bytes = listener.Receive(ref groupEP);
             listener.Close();
+            string data = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+            Console.WriteLine($"Received broadcast from {groupEP} :");
+            Console.WriteLine(data);
+            return Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+        }
+
+        public void testConnection()
+        {
+
         }
 
     }
-           
+
 }
