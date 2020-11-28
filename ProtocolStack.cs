@@ -10,6 +10,7 @@ namespace VODKA_MOSCOW_PROTOCOL
         public IPAddress ip;
         public int receive_port;
         public int send_port;
+        Packager pkg = new Packager();
 
         public void sendData(byte[] buffer)
         {
@@ -27,13 +28,9 @@ namespace VODKA_MOSCOW_PROTOCOL
             listener.Close();
             string data = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
             Console.WriteLine($"Received broadcast from {groupEP} :");
-            Console.WriteLine(data);
-            return Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-        }
-
-        public void testConnection()
-        {
-
+            var base64EncodedBytes = System.Convert.FromBase64String(pkg.unpack(data)[0]);
+            Console.WriteLine(System.Text.Encoding.UTF8.GetString(base64EncodedBytes));
+            return data;
         }
 
     }
