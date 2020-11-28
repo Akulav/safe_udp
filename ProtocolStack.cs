@@ -20,17 +20,19 @@ namespace VODKA_MOSCOW_PROTOCOL
             s.Close();
         }
 
-        public string receiveData()
+        public string[] receiveData()
         {
             UdpClient listener = new UdpClient(receive_port);
             IPEndPoint groupEP = new IPEndPoint(ip, receive_port);
             byte[] bytes = listener.Receive(ref groupEP);
             listener.Close();
             string data = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+            string[] output = pkg.unpack(data);
             Console.WriteLine($"Received broadcast from {groupEP} :");
-            var base64EncodedBytes = System.Convert.FromBase64String(pkg.unpack(data)[0]);
-            Console.WriteLine(System.Text.Encoding.UTF8.GetString(base64EncodedBytes));
-            return data;
+            var base64EncodedBytes = Convert.FromBase64String(pkg.unpack(data)[0]);
+            output[0] = Encoding.UTF8.GetString(base64EncodedBytes);
+            //Console.WriteLine(output[0]);
+            return output;
         }
 
     }
