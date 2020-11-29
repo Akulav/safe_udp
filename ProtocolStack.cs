@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,12 +12,13 @@ namespace VODKA_MOSCOW_PROTOCOL
         public int send_port;
         Packager pkg = new Packager();
 
-        public void sendData(byte[] buffer)
+        public String sendData(byte[] buffer)
         {
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPEndPoint ep = new IPEndPoint(ip, send_port);
             s.SendTo(buffer, ep);
             s.Close();
+            return Encoding.ASCII.GetString(buffer);
         }
 
         public string[] receiveData()
@@ -28,10 +29,10 @@ namespace VODKA_MOSCOW_PROTOCOL
             listener.Close();
             string data = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
             string[] output = pkg.unpack(data);
-            Console.WriteLine($"Received broadcast from {groupEP} :");
             var base64EncodedBytes = Convert.FromBase64String(pkg.unpack(data)[0]);
+            output[1] = pkg.unpack(data)[1];
             output[0] = Encoding.UTF8.GetString(base64EncodedBytes);
-            //Console.WriteLine(output[0]);
+            Console.WriteLine($"Received broadcast from {groupEP} :");
             return output;
         }
 

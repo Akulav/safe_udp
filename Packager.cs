@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Text;
 
@@ -14,6 +14,8 @@ namespace VODKA_MOSCOW_PROTOCOL
             dataTree dataRaw = new dataTree();
 
             dataRaw.data = data;
+            dataRaw.chunk = null;
+            dataRaw.code = null;
             dataRaw.checksum = BitConverter.ToString(checksum).Replace("-", "");
             string jsonStr = JsonConvert.SerializeObject(dataRaw);
 
@@ -47,5 +49,7 @@ namespace VODKA_MOSCOW_PROTOCOL
     {
         public byte[] data;
         public string checksum;
+        public string code;
+        public byte[] chunk;
     }
 }

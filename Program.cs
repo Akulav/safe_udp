@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Sockets;
+﻿using System.Net;
 
 namespace VODKA_MOSCOW_PROTOCOL
 {
@@ -13,10 +7,10 @@ namespace VODKA_MOSCOW_PROTOCOL
         static void Main(string[] args)
         {
             ServerClientSync sc = new ServerClientSync();
-            sc.ip = IPAddress.Parse("YOUR_IP");
-            sc.send_port = SEND_PORT;
-            sc.receive_port = RECEIVE_PORT;
-            //sc.syncWithServer(); or sc.syncWithClient(); Depending on the role.
+            sc.ip = IPAddress.Parse("192.168.10.110");
+            sc.send_port = 11001;
+            sc.receive_port = 11000;
+            sc.syncWithServer();
         }
     }
 }
