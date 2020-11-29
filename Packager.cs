@@ -14,11 +14,9 @@ namespace VODKA_MOSCOW_PROTOCOL
             dataTree dataRaw = new dataTree();
 
             dataRaw.data = data;
-            dataRaw.chunk = null;
-            dataRaw.code = null;
             dataRaw.checksum = BitConverter.ToString(checksum).Replace("-", "");
             string jsonStr = JsonConvert.SerializeObject(dataRaw);
-
+            
             return Encoding.ASCII.GetBytes(jsonStr);
         }
 
@@ -49,7 +47,5 @@ namespace VODKA_MOSCOW_PROTOCOL
     {
         public byte[] data;
         public string checksum;
-        public string code;
-        public byte[] chunk;
     }
 }

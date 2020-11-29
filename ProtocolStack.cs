@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace VODKA_MOSCOW_PROTOCOL
+namespace VODKA_MOSCOW_PROTOCOL 
 {
     class ProtocolStack
     {

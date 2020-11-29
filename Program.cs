@@ -7,7 +7,7 @@ namespace VODKA_MOSCOW_PROTOCOL
         static void Main(string[] args)
         {
             ServerClientSync sc = new ServerClientSync();
-            sc.ip = IPAddress.Parse("192.168.10.110");
+            sc.ip = IPAddress.Parse("192.168.10.106");
             sc.send_port = 11001;
             sc.receive_port = 11000;
             sc.syncWithServer();

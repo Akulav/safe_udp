@@ -17,9 +17,11 @@ namespace VODKA_MOSCOW_PROTOCOL
 
         public string[] buffer;
 
-        public String path = @"C:\PBL_presentation.pdf";
-        FileStream file = new FileStream("C:\\A\\PBL_presentation.pdf", FileMode.Open, FileAccess.Read, FileShare.Read);
+        public String path = @"C:\PBL_presentation.txt";
+        FileStream file = new FileStream("C:\\A\\PBL_presentation.txt", FileMode.Open, FileAccess.Read, FileShare.Read);
         Packager pkg = new Packager();
+        byte[] information = File.ReadAllBytes("C:\\A\\PBL_presentation.txt");
+
         public byte[] ReadFully(Stream stream)
         {
             Packager pkg = new Packager();
@@ -28,27 +30,32 @@ namespace VODKA_MOSCOW_PROTOCOL
             ps.receive_port = receive_port;
             ps.send_port = send_port;
 
-            byte[] buffer = new byte[8192]; //set the size of your buffer (chunk)
+            byte[] buffer = new byte[1024]; //set the size of your buffer (chunk)
             using (MemoryStream ms = new MemoryStream()) //You need a db connection instead
             {
                 while (true) //loop to the end of the file
                 {
                     int read = stream.Read(buffer, 0, buffer.Length); //read each chunk
-                    if (read <= 0) //check for end of file
+                    if (read <= 0)
+                    {
                         return ms.ToArray();
+                    }
                     ms.Write(buffer, 0, read); //write chunk to [wherever]
-                    Thread.Sleep(10);
-                    ps.sendData(pkg.pack(buffer));
+                    ms.Flush();
+                    while (true)
+                    {
+                        Thread.Sleep(500);
+                        ps.sendData(pkg.pack(buffer));
+                        string buff = ps.receiveData()[0];
+                        if (buff.Equals("1")) { break; }
+                      
+                    }
                 }
+
+                
             }
-        }
 
-        public void ConnectToServer()
-        {
-
-        }
-        public void ConnectToClient()
-        {
+            ps.sendData(pkg.pack(Encoding.ASCII.GetBytes("EOF")));
 
         }
 
@@ -58,13 +65,26 @@ namespace VODKA_MOSCOW_PROTOCOL
             ps.ip = ip;
             ps.receive_port = receive_port;
             ps.send_port = send_port;
-
-            buffer = ps.receiveData();
-            Console.WriteLine(pkg.verifyPackage(buffer[0], buffer[1]));
-            byte[] bytes = Encoding.ASCII.GetBytes(buffer[0]);
-            using (var stream = new FileStream("C:\\A\\PBL_presentations.pdf", FileMode.Append))
+            while (true)
             {
-                stream.Write(bytes, 0, bytes.Length);
+                while (true)
+                {
+                    buffer = ps.receiveData();
+                    sendAKG(pkg.verifyPackage(buffer[0], buffer[1]));
+                    Console.WriteLine(pkg.verifyPackage(buffer[0], buffer[1]));
+                    if (pkg.verifyPackage(buffer[0], buffer[1]) == 1) { break; }
+                }
+
+
+                byte[] bytes = Encoding.ASCII.GetBytes(buffer[0]);
+                using (var stream = new FileStream("C:\\A\\PBL_presentations.txt", FileMode.Append))
+                {
+                    stream.Write(bytes, 0, bytes.Length);
+                }
+
+                if (Encoding.ASCII.GetString(bytes).Equals("EOF"))
+                { break; }
+
             }
         }
 
@@ -84,10 +104,29 @@ namespace VODKA_MOSCOW_PROTOCOL
 
             if (buffer[0].Equals("FILE"))
             {
+                //MemoryStream stream = new MemoryStream(information);
                 ReadFully(file);
             }
 
             Console.WriteLine(buffer[0]);
+        }
+
+        public void sendAKG(int code)
+        {
+            ProtocolStack ps = new ProtocolStack();
+            ps.ip = ip;
+            ps.receive_port = receive_port;
+            ps.send_port = send_port;
+
+            if (code == 0)
+            {
+                ps.sendData(pkg.pack(Encoding.ASCII.GetBytes("0")));
+            }
+
+            if (code == 1)
+            {
+                ps.sendData(pkg.pack(Encoding.ASCII.GetBytes("1")));
+            }
         }
     }
 }
