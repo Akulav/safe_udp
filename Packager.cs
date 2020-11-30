@@ -6,6 +6,7 @@ namespace VODKA_MOSCOW_PROTOCOL
 {
     class Packager
     {
+        Compressor zip = new Compressor();
 
         public byte[] pack(byte[] data)
         {
@@ -15,14 +16,17 @@ namespace VODKA_MOSCOW_PROTOCOL
 
             dataRaw.data = data;
             dataRaw.checksum = BitConverter.ToString(checksum).Replace("-", "");
-            string jsonStr = JsonConvert.SerializeObject(dataRaw);
+            string jsonStr = zip.CompressString(JsonConvert.SerializeObject(dataRaw));
             
+            
+
             return Encoding.ASCII.GetBytes(jsonStr);
         }
 
         public string[] unpack(string json)
         {
-            dynamic unpacked = JsonConvert.DeserializeObject(json);
+            string unzip = zip.DecompressString(json);
+            dynamic unpacked = JsonConvert.DeserializeObject(unzip);
             string[] result = { unpacked.data, unpacked.checksum };
             return result;
         }
