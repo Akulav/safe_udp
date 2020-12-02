@@ -16,6 +16,9 @@ Calculates a checksum for the data and then packs them into a json. It also call
 # ServerClientSync
 This does most of the work. It is basically the controller for the entire data exchange. It switches both the client and server between two states: write / read. It also makes sure that all data arrives reliably. If connection is lost, a easy to modify timeout variable can change the maximum number of data retransmission.
 
+# FTP 
+It works but, very slow. It separates a large file in however large chunks you want, and send them. Retransmission ensures packet safety. (for some reason there are a lot of packet loss, therefore it is very slow because of a large number of retransmissions. (It is there, but let's say it is only half baked, ignore it).
+
 # Program Class
 
 Default main class. 
