@@ -1,19 +1,19 @@
 # A better UDP, rebranded as VODKA PROTOCOL
-Features: error checking, retransmission, encryption, data compression.\
+Features: error checking, retransmission, encryption, data compression.
 
 # The list of classes:
 
 # Protocol Stack
-Has only two functions. It can send and receive data.\
+Has only two functions. It can send and receive data.
 
 # Compressor
-Compresses and decompresses data (lossless)\
+Compresses and decompresses data (lossless)
 
 # Encryptor
-Reliably makes a handshake between the server and the client to agree on an encryption key. Diffie-Hellman style.\
+Reliably makes a handshake between the server and the client to agree on an encryption key. Diffie-Hellman style.
 
 # Packager
-Calculates a checksum for the data and then packs them into a json. It also calls the compressor and encryptor after the json is created. It has also the function of checking the checksum for data integrity.\
+Calculates a checksum for the data and then packs them into a json. It also calls the compressor and encryptor after the json is created. It has also the function of checking the checksum for data integrity.
 
 # ServerClientSync
 This does most of the work. It is basically the controller for the entire data exchange. It switches both the client and server between two states: write / read. It also makes sure that all data arrives reliably. If connection is lost, a easy to modify timeout variable can change the maximum number of data retransmission.
