@@ -1,8 +1,6 @@
 # A better UDP, rebranded as VODKA PROTOCOL
 Features: error checking, retransmission, encryption, data compression.
 
-# The list of classes:
-
 # Protocol Stack
 Has only two functions. It can send and receive data.
 
