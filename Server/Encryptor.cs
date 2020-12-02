@@ -74,8 +74,6 @@ namespace Server
             data = receiveDataRetrans();
             swapped_key = int.Parse(data[0]);
             final_key = swapped_key + private_key;
-
-            Console.WriteLine(final_key);
             return final_key;
         }
 
@@ -102,8 +100,6 @@ namespace Server
             Thread.Sleep(200);
             sendbuf = Encoding.ASCII.GetBytes(iteration_zero.ToString());
             sendDataRetrans(sendbuf);
-
-            Console.WriteLine(final_key);
             return final_key;
         }
 
