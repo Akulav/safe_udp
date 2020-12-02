@@ -10,7 +10,7 @@ namespace Server
         public IPAddress ip;
         public int receive_port;
         public int send_port;
-        public int key = 1234567890;
+        public int key = 1234567890; //default key, used only if another key was not generated.
         Packager pkg = new Packager();
         Encryptor ec = new Encryptor();
 
