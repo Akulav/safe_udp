@@ -1,4 +1,4 @@
-# A better UDP, rebranded as VODKA PROTOCOL\
+# A better UDP, rebranded as VODKA PROTOCOL
 Features: error checking, retransmission, encryption, data compression.\
 \
 #The list of classes:\
