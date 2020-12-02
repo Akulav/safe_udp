@@ -17,10 +17,10 @@ namespace Server
 
         public string[] buffer;
 
-        public String path = @"C:\PBL_presentation.txt";
-        FileStream file = new FileStream("C:\\A\\PBL_presentation.txt", FileMode.Open, FileAccess.Read, FileShare.Read);
+        public String path = @"YOUR FILE PATH";
+        FileStream file = new FileStream("YOUR FILE PATH", FileMode.Open, FileAccess.Read, FileShare.Read);
         Packager pkg = new Packager();
-        byte[] information = File.ReadAllBytes("C:\\A\\PBL_presentation.txt");
+        byte[] information = File.ReadAllBytes("YOUR FILE PATH");
 
         public byte[] ReadFully(Stream stream)
         {
